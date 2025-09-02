@@ -26,11 +26,9 @@ export default function Dashboard() {
   }, []);
 
   const toggleSelect = (id) => {
-    if (selected.includes(id)) {
-      setSelected(selected.filter((x) => x !== id));
-    } else {
-      setSelected([...selected, id]);
-    }
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
   };
 
   const toggleSelectAll = () => {
@@ -42,11 +40,12 @@ export default function Dashboard() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this application?")) return;
+    if (!window.confirm("Are you sure you want to delete this application?"))
+      return;
     try {
       await apiFetch(`/api/applications/${id}`, { method: "DELETE" });
       setApps(apps.filter((a) => a._id !== id));
-    } catch (err) {
+    } catch {
       alert("Failed to delete application");
     }
   };
@@ -81,6 +80,7 @@ export default function Dashboard() {
               <th className="p-3">Role</th>
               <th className="p-3">Company</th>
               <th className="p-3">Status</th>
+              <th className="p-3">Date Applied</th>
               <th className="p-3 text-center">Actions</th>
             </tr>
           </thead>
@@ -100,11 +100,7 @@ export default function Dashboard() {
                   />
                 </td>
                 <td className="p-3 font-medium text-gray-900">{app.role}</td>
-                <td className="p-3">
-                  {typeof app.company === "string"
-                    ? app.company
-                    : app.company?.name || "—"}
-                </td>
+                <td className="p-3">{app.company || "—"}</td>
                 <td className="p-3">
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-semibold ${
@@ -120,16 +116,18 @@ export default function Dashboard() {
                     {app.status}
                   </span>
                 </td>
+                <td className="p-3 text-gray-700">
+                  {app.dateApplied
+                    ? new Date(app.dateApplied).toLocaleDateString()
+                    : new Date(app.createdAt).toLocaleDateString()}
+                </td>
                 <td className="p-3 flex gap-2 justify-center">
-                  {/* Edit button */}
                   <button
                     onClick={() => navigate(`/applications/${app._id}/edit`)}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm shadow transition"
                   >
                     Edit
                   </button>
-
-                  {/* Delete button */}
                   <button
                     onClick={() => handleDelete(app._id)}
                     className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm shadow transition"

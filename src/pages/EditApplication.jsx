@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { apiFetch } from "../utils/api";
 
 export default function EditApplication() {
-  const { id } = useParams(); // get app ID from URL
+  const { id } = useParams(); // app ID from URL
   const navigate = useNavigate();
 
   const [role, setRole] = useState("");
@@ -12,22 +12,24 @@ export default function EditApplication() {
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
   const [notes, setNotes] = useState("");
+  const [dateApplied, setDateApplied] = useState(""); // NEW FIELD
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Fetch existing application on mount
+  // Fetch application details
   useEffect(() => {
     async function loadApp() {
       try {
         const data = await apiFetch(`/api/applications/${id}`);
         setRole(data.role || "");
         setStatus(data.status || "Awaiting");
-        setCompany(data.company?.name || "");
+        setCompany(data.company || ""); // no need for populate if plain string
         setLocation(data.location || "");
         setSalary(data.salary || "");
         setNotes(data.notes || "");
+        setDateApplied(data.dateApplied ? data.dateApplied.split("T")[0] : "");
       } catch (err) {
         setError("Failed to load application.");
       } finally {
@@ -37,6 +39,7 @@ export default function EditApplication() {
     loadApp();
   }, [id]);
 
+  // Save changes
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
@@ -48,10 +51,11 @@ export default function EditApplication() {
         body: JSON.stringify({
           role,
           status,
+          company,
           location,
           salary,
           notes,
-          company, // editable now
+          dateApplied, // send to backend
         }),
       });
       navigate("/dashboard");
@@ -128,6 +132,16 @@ export default function EditApplication() {
             className="w-full border px-3 py-2 rounded"
             value={salary}
             onChange={(e) => setSalary(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-medium">Date Applied</label>
+          <input
+            type="date"
+            className="w-full border px-3 py-2 rounded"
+            value={dateApplied}
+            onChange={(e) => setDateApplied(e.target.value)}
           />
         </div>
 

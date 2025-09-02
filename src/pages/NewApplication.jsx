@@ -9,6 +9,7 @@ export default function NewApplication() {
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
   const [notes, setNotes] = useState("");
+  const [dateApplied, setDateApplied] = useState(""); // <-- new field
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -30,6 +31,7 @@ export default function NewApplication() {
           location,
           salary,
           notes,
+          dateApplied, // send to backend
         }),
       });
       navigate("/dashboard");
@@ -104,6 +106,16 @@ export default function NewApplication() {
             className="w-full border px-3 py-2 rounded"
             value={salary}
             onChange={(e) => setSalary(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-medium">Date Applied</label>
+          <input
+            type="date"
+            className="w-full border px-3 py-2 rounded"
+            value={dateApplied}
+            onChange={(e) => setDateApplied(e.target.value)}
           />
         </div>
 

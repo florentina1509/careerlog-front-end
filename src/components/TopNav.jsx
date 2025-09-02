@@ -28,13 +28,13 @@ export default function TopNav() {
               <div className="flex gap-4 items-center">
                 <Link
                   to="/applications/new"
-                  className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm shadow"
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition"
                 >
                   + New Application
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="text-sm text-gray-600 underline hover:text-gray-900"
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition"
                 >
                   Sign Out
                 </button>
