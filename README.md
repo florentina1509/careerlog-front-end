@@ -59,6 +59,11 @@ Companies
 - PUT /api/companies/:id
 - DELETE /api/companies/:id
 
+Stretch Goals
+
+- I woudld like to add a CV area where users can upload their cv for others to view
+- Add some AI features to prep users for particular interviews and enhance their CVs
+  
 ExcaliDraw 
 
 https://excalidraw.com/#json=_hlnry63-bsBHL0CaahC8,be7e6PPNYh9aQ7MdR8I67A
